@@ -1,0 +1,1846 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;600&display=swap');
+
+/* Reset & variables */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root{
+  /* palette adjusted to a warmer, cohesive rose-gold / cream theme */
+  --bg-cream: #ffffff;            /* warm cream */
+  --bg-soft: #ffffff;             /* softer cream for gradients */
+  --text-dark: #3b2b2a;           /* warm dark brown for text */
+  --muted: rgba(59,43,42,0.6);    /* muted variant of text color */
+  --rose-1: #95ef85;             /* muted terracotta rose */
+  --rose-2: #e8c6be;             /* soft peach/rose */
+  --metal: #716791;              /* warm gold/rose-metal */
+  --accent-gradient: linear-gradient(135deg,var(--rose-1),var(--metal));
+  --card-bg: rgba(255,255,255,0.65);
+  --glass: rgba(255,255,255,0.45);
+  --shadow: 0 12px 36px rgba(59,43,42,0.12);
+
+  /* responsive gallery sizing: clamp(min, vw-based, max) for cross-device fit */
+  --gallery-img-w: clamp(220px, 40vw, 360px);
+  --gallery-img-h: clamp(140px, 28vw, 220px);
+  --gallery-count: 6;
+  --gallery-scroll-duration: 28s;
+  --gallery-edge-w: 80px; /* width of white fade on each side */
+  --edge-rgb: 255,249,247; /* RGB of --bg-cream (#fff9f7) */
+}
+
+/* body */
+body {
+  margin: 0;
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--text-dark);
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(231,183,172,0.08), transparent),
+              linear-gradient(180deg, var(--bg-cream), var(--bg-soft));
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering: optimizeLegibility;
+  text-align: center;
+  padding-bottom: 0;
+  overflow-x: hidden;
+}
+
+
+
+
+/* ================= ORNAMEN GLOBAL ================= */
+.section-ornament {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* bunga kiri atas */
+.section-ornament::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 280px;
+
+  background: url('ornament-flower-left.png') no-repeat;
+  background-size: contain;
+  opacity: 0.6;
+}
+
+/* bunga kanan bawah */
+.section-ornament::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 280px;
+  height: 280px;
+
+  background: url('ornament-flower-right.png') no-repeat;
+  background-size: contain;
+  opacity: 0.6;
+}
+.section-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(255, 240, 230, 0.4),
+    rgba(255, 240, 230, 0.6)
+  );
+  z-index: 1;
+}
+
+
+/* COVER - decorative card */
+.cover {
+  /* place darker overlay above image to increase contrast */
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.62), rgba(0,0,0,0)),
+    url('covernew.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* keep spacing and layout (unchanged) */
+  min-height: calc(100vh - 0px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* keep content from centering vertically */
+  align-items: center;         /* center horizontally */
+  gap: 14px;
+  padding: 80px 24px 40px;     /* space top, leave center free */
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(200,155,122,0.14);
+  position: relative;
+  overflow: visible;
+}
+
+/* make cover text bright white for readability */
+.cover h1,
+.cover p,
+.cover h2,
+.cover h3,
+.top-pretitle,
+#guestName,
+.guest-invite,
+.cover .divider {
+  color: #fff;
+}
+
+/* stronger, subtle shadow for title to lift off dark bg */
+.cover h1 {
+  text-shadow: 0 6px 30px rgba(0,0,0,0.65);
+}
+
+/* adjust guest-invite readability */
+.guest-invite {
+  color: rgba(255,255,255,0.92);
+}
+
+/* make divider slightly more luminous on dark bg */
+.divider {
+  background: linear-gradient(90deg, rgba(255,210,190,0.95), rgba(200,155,122,0.95));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+/* ensure button label/icon remain visible */
+.cover-footer button,
+.cover > button {
+  color: #fff;
+}
+
+/* spacer pushes footer to bottom while keeping middle empty */
+.spacer {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+/* footer area at bottom of cover */
+.cover-footer {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+/* ensure guest name uses serif like couple name */
+#guestName {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  margin: 4px 0;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* make guest-invite slightly compact at bottom */
+.guest-invite {
+  max-width: 760px;
+  margin: 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* adjust footer button spacing if needed */
+.cover-footer button {
+  margin-top: 6px;
+}
+
+/* headings - elegant serif for title */
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  font-weight: 700;
+  margin: 6px 0 4px;
+  color: var(--text-dark);
+  letter-spacing: 0.6px;
+  text-transform: capitalize;
+  text-shadow: 0 3px 12px rgba(200,150,130,0.06);
+}
+
+h2, h3 {
+  font-family: 'Playfair Display', serif;
+  
+  margin: 10px;
+}
+
+/* subtitle small */
+.cover p, .cover h2, .cover h3 {
+  
+  font-size: 14px;
+}
+
+/* divider decorative */
+.divider {
+  width: 90px;
+  height: 4px;
+  margin: 8px auto 18px;
+  border-radius: 4px;
+  background: var(--accent-gradient);
+  box-shadow: 0 4px 18px rgba(200,150,130,0.12);
+}
+
+/* buttons - rose gold pill */
+button {
+  padding: 12px 70px;
+  border: none;
+  border-radius: 999px;
+  background-image: var(--accent-gradient);
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  box-shadow: 0 8px 24px rgba(183,110,121,0.12);
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(183,110,121,0.18);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(200,150,130,0.12);
+  outline-offset: 3px;
+}
+
+/* button: align svg and label */
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* small label inside button when using svg */
+.btn-label {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ensure svg icon scales well */
+button svg {
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* main content */
+main.container {
+  background: transparent;
+}
+
+/* info text */
+p {
+  margin: 6px 0;
+}
+
+/* countdown styling */
+#countdown {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--text-dark);
+  margin: 12px 0 18px;
+}
+
+/* gallery: full-bleed, horizontal auto-scroll (right -> left)
+   --gallery-img-w must match .photo width below; overrides in media queries */
+:root {
+  --gallery-img-w: clamp(220px, 40vw, 360px);
+  --gallery-img-h: clamp(140px, 28vw, 220px);
+  --gallery-count: 6;
+  --gallery-scroll-duration: 28s;
+  --gallery-edge-w: 80px; /* width of white fade on each side */
+  --edge-rgb: 255,249,247; /* RGB of --bg-cream (#fff9f7) */
+}
+
+/* gallery container full-bleed */
+.gallery {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw); /* remove container side margins */
+  margin-right: calc(50% - 50vw);
+  padding: 10px 0; /* small vertical padding only */
+  overflow: hidden;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+/* symmetric side fades using site background color (edge RGB) */
+.gallery::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6; /* above images and accent overlay */
+  background: linear-gradient(
+    to left,
+    rgba(var(--edge-rgb),0.98) 0px,
+    rgba(var(--edge-rgb),0.98) calc(var(--gallery-edge-w) - 15px),
+    rgba(var(--edge-rgb),0) calc(var(--gallery-edge-w) + 1px),
+    rgba(var(--edge-rgb),0) calc(80% - var(--gallery-edge-w) - 1px),
+    rgba(var(--edge-rgb),0.98) calc(104% - var(--gallery-edge-w)),
+    rgba(var(--edge-rgb),0.98) 84%
+  );
+  mix-blend-mode: normal;
+  border-radius: 0;
+}
+
+/* symmetric side fades using site background color (edge RGB) */
+.gallery::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6; /* above images and accent overlay */
+  background: linear-gradient(
+    to right,
+    rgba(var(--edge-rgb),0.98) 0px,
+    rgba(var(--edge-rgb),0.98) calc(var(--gallery-edge-w) - 15px),
+    rgba(var(--edge-rgb),0) calc(var(--gallery-edge-w) + 1px),
+    rgba(var(--edge-rgb),0) calc(80% - var(--gallery-edge-w) - 1px),
+    rgba(var(--edge-rgb),0.98) calc(104% - var(--gallery-edge-w)),
+    rgba(var(--edge-rgb),0.98) 84%
+  );
+  mix-blend-mode: normal;
+  border-radius: 0;
+}
+
+/* responsive: reduce edge width on smaller screens */
+@media (max-width: 720px) {
+  :root { --gallery-edge-w: 48px; }
+}
+@media (max-width: 420px) {
+  :root { --gallery-edge-w: 32px; }
+}
+
+/* inner row that scrolls; width equals 2 * gallery-count * img width */
+.gallery-inner {
+  display: flex;
+  gap: 0; /* no gap left/right */
+  align-items: stretch;
+  will-change: transform;
+  /* use responsive var for total width (2x the set of images) */
+  width: calc(var(--gallery-img-w) * var(--gallery-count) * 2);
+  animation: scroll-left var(--gallery-scroll-duration) linear infinite;
+}
+
+/* each photo: fixed width (drives animation length) */
+.photo {
+  flex: 0 0 auto;
+  width: var(--gallery-img-w);
+  height: var(--gallery-img-h);
+  object-fit: cover;
+  display: block;
+  border-radius: 0; /* remove rounded so edges touch (no left/right margin) */
+  box-shadow: none;
+  border: 0; /* remove border so images butt together */
+  transform-origin: center;
+}
+
+/* hover subtle lift */
+.photo:hover { transform: scale(1.03); z-index: 6; }
+
+/* responsive overrides for the image width variable */
+@media (max-width: 1024px) {
+  :root { --gallery-img-w: 300px; }
+  .photo { height: 200px; }
+  .gallery-inner { width: calc(var(--gallery-img-w) * 12); }
+}
+@media (max-width: 720px) {
+  :root { --gallery-img-w: 180px; }
+  .photo { height: 180px; }
+  .gallery-inner { width: calc(var(--gallery-img-w) * 12); }
+}
+@media (max-width: 420px) {
+  :root { --gallery-img-w: 190px; }
+  .photo { height: 150px; }
+  .gallery-inner { width: calc(var(--gallery-img-w) * 12); }
+}
+
+/* animation: translate by exactly width of first 6 images (ensures it reaches foto 6) */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-1 * (var(--gallery-img-w) * var(--gallery-count)))); }
+}
+
+/* honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-inner { animation: none; transform: none; }
+}
+
+/* ensure lightbox and other overlays remain above gallery */
+.lightbox, .lightbox-inner, .lightbox-close { z-index: 10010; }
+
+/* RSVP card inputs */
+form#rsvpForm {
+  margin: 12px auto 18px;
+  background: rgba(255,255,255,0.28);
+  padding: 18px;
+  border-radius: 12px;
+  max-width: 680px;
+  box-shadow: 0 8px 30px rgba(46,35,33,0.06);
+  border: 1px solid rgba(200,150,130,0.06);
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-left: 5%;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* inputs */
+input, textarea, select {
+  width: 90%;
+  padding: 12px 14px;
+  margin: 6px 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(46,35,33,0.06);
+  background: rgba(255,255,255,0.85);
+  color: var(--text-dark);
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  resize: vertical;
+  box-shadow: 0 6px 18px rgba(46,35,33,0.04) inset;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(46,35,33,0.45);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(231,183,172,0.08);
+  border-color: rgba(183,110,121,0.28);
+}
+
+/* small helper text */
+#totalHadir {
+  margin-top: 8px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* hadiah area */
+.hadiah {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+/* copy button smaller */
+button.copy {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+/* hidden */
+.hidden { display: none; }
+
+/* responsive */
+@media (min-width: 720px) {
+  h1 { font-size: 56px; }
+  .gallery img {  height: 240px; }
+  form#rsvpForm { padding: 28px; }
+}
+
+@media (max-width: 420px) {
+  h1 { font-size: 28px; }
+  .gallery img {height: 230px; }
+  form#rsvpForm { width: 94%; padding: 14px; }
+}
+
+/* accessibility & reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* custom scrollbar for modern browsers */
+.list-ucapan-container::-webkit-scrollbar {
+  width: 10px;
+}
+.list-ucapan-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.list-ucapan-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(183,110,121,0.22), rgba(200,150,130,0.18));
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.12);
+}
+
+/* ensure individual messages remain readable */
+.list-ucapan p {
+  margin: 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(200,150,130,0.06);
+  color: var(--text-dark);
+  text-align: left;
+}
+
+/* smaller max-height on small screens */
+@media (max-width: 720px) {
+  .list-ucapan-container { max-height: 260px; }
+}
+
+/* daftar ucapan */
+.list-ucapan-container {
+  max-width: 680px;
+  margin: 12px auto;
+  max-height: 340px; /* ruang untuk ~5 pesan */
+  overflow-y: auto;
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.28); /* sama seperti form#rsvpForm */
+  border: 1px solid rgba(200,150,130,0.06);
+  box-shadow: 0 8px 30px rgba(46,35,33,0.06);
+}
+
+/* remove extra padding from inner wrapper if any */
+.list-ucapan {
+  padding: 0;
+  margin: 0;
+}
+
+/* each message as a small card matching input style */
+.list-ucapan p {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.92); /* like input background */
+  border: 1px solid rgba(46,35,33,0.06);
+  box-shadow: inset 0 6px 18px rgba(46,35,33,0.04);
+  color: var(--text-dark);
+  text-align: left;
+  line-height: 1.45;
+}
+
+/* responsive adjustments */
+@media (max-width: 720px) {
+  .list-ucapan-container { max-height: 260px; padding: 14px; }
+}
+
+/* small pre-title above main heading */
+.pre-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 8px;
+  margin-bottom: 6px;
+}
+
+/* simple boxed countdown */
+.countdown {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin: 14px 0 20px;
+  flex-wrap: wrap;
+}
+
+.count-item {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(200,150,130,0.06);
+  box-shadow: 0 8px 20px rgba(46,35,33,0.04);
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-width: 76px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.count-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+}
+
+.count-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.6px;
+}
+
+/* responsive: reduce size on small screens */
+@media (max-width: 420px) {
+  .count-item { min-width: 60px; padding: 8px 10px; }
+  .count-number { font-size: 18px; }
+  .count-label { font-size: 10px; }
+}
+
+/* top pretitle (paling atas) */
+.top-pretitle {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin: 18px 0 0;
+}
+
+/* hero block inside MAIN: keep intro + countdown in one viewport on phones */
+.hero {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* on small screens make the hero fill the viewport height */
+@media (max-width: 420px) {
+  .hero {
+    min-height: 100vh;
+    justify-content: center; /* center content vertically within the viewport */
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+
+  /* slightly tighten spacing for mobile */
+  .hero .pre-title { margin-bottom: 0px; padding: 43px 0px 1px;}
+  .hero h1 { font-size: 48px; line-height: 0.05; }
+  .hero .countdown { margin-top: 20px; }
+}
+
+/* on larger screens keep normal flow */
+@media (min-width: 721px) {
+  .hero { min-height: auto; justify-content: flex-start; }
+}
+
+/* make cover title larger and responsive */
+.cover h1 {
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-align: center;
+  margin: 0;
+  padding: 0 10px;
+  font-weight: 700;
+  text-transform: none;
+}
+
+/* responsive scales for the cover title */
+@media (max-width: 992px) {
+  .cover h1 { font-size: 56px; }
+}
+
+@media (max-width: 720px) {
+  .cover h1 { font-size: 44px; }
+}
+
+@media (max-width: 420px) {
+  .cover h1 { font-size: 40px; }
+}
+
+/* ensure full-viewport calculations are consistent */
+html, body {
+  height: 100%;
+}
+
+/* make hero fill mobile viewport exactly and remove top spacing */
+@media (max-width: 420px) {
+  main.container {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .hero {
+    min-height: 100vh;            /* fill entire phone screen */
+    box-sizing: border-box;
+    padding: 16px;
+    justify-content: center;      /* center content vertically in that screen */
+    gap: 8px;
+  }
+}
+
+.verse-section {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 8px 16px;
+  box-sizing: border-box;
+}
+
+.verse {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+.verse-text {
+  font-size: 14px;
+  color: rgba(46,35,33,0.9);
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+  text-align: center;
+  font-style: italic;
+}
+
+.verse-citation {
+  font-size: 13px;
+  color: rgba(46,35,33,0.65);
+  text-align: center;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* adjust for dark cover/background contexts if needed */
+@media (max-width: 720px) {
+  .verse-text { font-size: 10px; }
+  .verse-citation { font-size: 10px; }
+}
+
+/* COVER entrance animations: gentle fade/slide/scale with small stagger */
+.top-pretitle {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: pretitle-in 700ms cubic-bezier(.2,.9,.2,1) 300ms both;
+}
+
+@keyframes pretitle-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cover h1 {
+  opacity: 0;
+  transform: translateY(18px) scale(0.995);
+  will-change: transform, opacity, letter-spacing, filter;
+  animation: title-in 900ms cubic-bezier(.2,.9,.2,1) 430ms both;
+  /* slight luminous glow for elegance on dark cover */
+  text-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.03);
+}
+
+/* small animated accent on divider to complement title entrance */
+.divider {
+  opacity: 0;
+  transform: scaleX(0.6);
+  transform-origin: center;
+  animation: divider-in 820ms cubic-bezier(.2,.9,.2,1) 550ms both;
+}
+
+@keyframes title-in {
+  0% { opacity: 0; transform: translateY(22px) scale(0.995) skewX(0.2deg); letter-spacing: 0px; filter: blur(1.2px); }
+  60% { opacity: 1; transform: translateY(-4px) scale(1.01); letter-spacing: 0.6px; filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: 0.6px; filter: blur(0); }
+}
+@keyframes divider-in {
+  to { opacity: 1; transform: scaleX(1); }
+}
+
+/* subtle continuous attention 'shake' for cover open button (very gentle) */
+.cover .cover-footer > button {
+  transform-origin: center;
+  animation: cover-button-shake 4.2s ease-in-out infinite;
+  /* slightly reduce default hover translate to avoid jump conflicts */
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+@keyframes cover-button-shake {
+  0%   { transform: translateY(0) rotate(0deg); }
+  10%  { transform: translateX(-1.2px) rotate(-0.35deg); }
+  25%  { transform: translateX(1.2px)  rotate(0.35deg); }
+  45%  { transform: translateX(-0.6px) rotate(-0.25deg); }
+  65%  { transform: translateX(0.6px)  rotate(0.25deg); }
+  90%  { transform: translateX(-0.4px) rotate(-0.15deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* on hover slightly amplify the lift (keeps the gentle shake) */
+.cover .cover-footer > button:hover {
+  transform: translateY(-3px);
+  animation-duration: 3.2s;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .top-pretitle,
+  .cover h1,
+  .divider,
+  .cover .cover-footer > button {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.hero h3 {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 13px !important;
+  letter-spacing: 9px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* OPTIONAL: biar lebih rapih spacing antara title */
+
+
+/* OPTIONAL: kasih jarak elegan antara ayat & countdown */
+.countdown-section {
+  margin-top: 10px;
+}
+
+
+/* HERO BACKGROUND + OVERLAY GELAP */
+.hero {
+  position: relative;
+  overflow: hidden;
+
+  background-image: 
+    linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.55)),
+    url('hero.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+
+/* BIAR TEXT DI HERO JADI PUTIH & KONTRAS */
+.hero h1,
+.hero h3,
+.hero .pre-title,
+.hero .verse-text,
+.hero .verse-citation {
+  color: #fff;
+}
+
+/* OPTIONAL: biar ayat sedikit lebih soft */
+.hero .verse-text {
+  color: rgba(255,255,255,0.9);
+}
+
+.hero .verse-citation {
+  color: rgba(255,255,255,0.7);
+}
+
+
+/* BRIDE SECTION (RESPONSIVE FIX) */
+.section-bride {
+  position: relative;
+  min-height: 100vh;
+
+  background-image: 
+    linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)),
+    url('cewek.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  padding: clamp(20px, 5vw, 60px);
+  box-sizing: border-box;
+}
+
+/* container isi */
+.bride-content {
+  color: #fff;
+  text-align: left;
+
+  max-width: 90%;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* nama */
+.bride-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 6vw, 40px); /* responsive */
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* garis bawah */
+.bride-line {
+  width: 50px;
+  height: 2px;
+  background: #fff;
+  margin: 6px 0 12px;
+  opacity: 0.8;
+}
+
+/* deskripsi */
+.bride-desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(12px, 3vw, 14px);
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* orang tua */
+.bride-parents {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(13px, 3.5vw, 15px);
+  margin: 4px 0 14px;
+  line-height: 1.4;
+}
+
+/* button instagram kecil */
+.btn-instagram {
+  padding: 8px 14px;
+  font-size: clamp(11px, 3vw, 13px);
+  border-radius: 999px;
+}
+
+/* ========================= */
+/* EXTRA OPTIMASI KHUSUS HP */
+/* ========================= */
+@media (max-width: 420px) {
+
+  .section-bride {
+    align-items: flex-end;
+    padding: 24px 16px;
+  }
+
+  .bride-content {
+    max-width: 100%;
+  }
+
+  .bride-line {
+    width: 40px;
+  }
+
+}
+
+/* ========================= */
+/* TABLET / DESKTOP */
+/* ========================= */
+@media (min-width: 768px) {
+
+  .section-bride {
+    padding: 60px;
+  }
+
+  .bride-content {
+    max-width: 400px;
+  }
+
+}
+
+
+
+
+
+
+/* GROOM SECTION */
+.section-groom {
+  position: relative;
+  min-height: 100vh;
+
+  background-image: 
+    linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)),
+    url('groom.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end; /* kanan */
+
+  padding: clamp(20px, 5vw, 60px);
+  box-sizing: border-box;
+}
+
+/* container isi */
+.groom-content {
+  color: #fff;
+  text-align: right;
+
+  max-width: 90%;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* nama */
+.groom-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 6vw, 40px);
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* garis */
+.groom-line {
+  width: 50px;
+  height: 2px;
+  background: #fff;
+  margin: 6px 0 12px auto; /* ke kanan */
+  opacity: 0.8;
+}
+
+/* text */
+.groom-desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(12px, 3vw, 14px);
+  margin: 0;
+  opacity: 0.85;
+}
+
+.groom-parents {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(13px, 3.5vw, 15px);
+  margin: 4px 0 14px;
+  line-height: 1.4;
+}
+
+/* ========================= */
+/* MOBILE FIX */
+/* ========================= */
+@media (max-width: 420px) {
+
+  .section-groom {
+    justify-content: flex-start; /* biar nggak kepojok kanan di HP */
+  }
+
+  .groom-content {
+    text-align: left;
+  }
+
+  .groom-line {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+}
+/* button instagram dengan icon */
+.btn-instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-instagram svg {
+  display: block;
+}
+
+
+/* SAVE THE DATE SECTION */
+.countdown-section {
+  position: relative;
+
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 50%), rgba(255, 255, 255, 50%)),
+    url('bg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  align-items: flex-end;
+  justify-content: flex-end; /* kanan */
+
+  padding: clamp(20px, 5vw, 60px);
+  box-sizing: border-box;
+}
+.countdown-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+/* title besar */
+.save-date-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 6vw, 48px);
+  margin-bottom: 12px;
+  color: var(--text-dark);
+}
+
+/* verse */
+.save-date-verse {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(13px, 3.5vw, 16px);
+  line-height: 1.6;
+}
+
+/* EVENT DETAIL */
+.event-detail {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* title kecil */
+.event-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* nama acara */
+.event-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 5vw, 32px);
+  margin-bottom: 10px;
+  color: var(--text-dark);
+}
+
+/* tanggal */
+.event-date {
+  font-size: 14px;
+  margin: 2px 0;
+}
+
+/* waktu */
+.event-time {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* alamat */
+.event-location {
+  max-width: 500px;
+  margin: 0 auto 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* button lokasi */
+.btn-location {
+  padding: 10px 20px;
+  font-size: 13px;
+  border-radius: 999px;
+}
+
+/* SAVE THE DATE SECTION */
+.gallery-section {
+  position: relative;
+
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 50%), rgba(255, 255, 255, 50%)),
+    url('bg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  align-items: flex-end;
+  justify-content: flex-end; /* kanan */
+
+  padding: clamp(20px, 5vw, 60px);
+  box-sizing: border-box;
+}
+/* GALLERY HEADER */
+.gallery-section {
+  text-align: center;
+  padding-top: 40px;
+}
+
+/* title */
+.gallery-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 6vw, 42px);
+  margin-bottom: 10px;
+  color: var(--text-dark);
+}
+
+/* verse */
+.gallery-verse {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(13px, 3.5vw, 15px);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* SAVE THE DATE SECTION */
+.rsvp-section {
+  position: relative;
+
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 50%), rgba(255, 255, 255, 50%)),
+    url('bg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  align-items: flex-end;
+  justify-content: flex-end; /* kanan */
+
+  padding: clamp(20px, 5vw, 60px);
+  box-sizing: border-box;
+}
+
+/* RSVP SECTION */
+.rsvp-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+/* title */
+.rsvp-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 6vw, 42px);
+  margin-bottom: 10px;
+}
+
+/* deskripsi */
+.rsvp-desc {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* form */
+#rsvpForm {
+  max-width: 500px;
+  margin: 0 auto 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* input */
+#rsvpForm input,
+#rsvpForm textarea,
+#rsvpForm select {
+  width: 100%;
+}
+
+/* ========================= */
+/* LIST UCAPAN SCROLL */
+/* ========================= */
+.ucapan-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  max-height: 300px; /* batas tinggi */
+  overflow-y: auto;  /* scroll aktif */
+  overflow-x: hidden;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.5);
+}
+
+/* isi ucapan */
+.list-ucapan p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 8px 0;
+  text-align: left;
+  font-size: 14px;
+}
+
+.list-ucapan p {
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* pastikan tidak melebar keluar container */
+.list-ucapan {
+  width: 100%;
+}
+
+/* SAVE THE DATE SECTION */
+.gift-section {
+  position: relative;
+
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 50%), rgba(255, 255, 255, 50%)),
+    url('bg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  align-items: flex-end;
+  justify-content: flex-end; /* kanan */
+
+  padding: clamp(20px, 5vw, 60px);
+  box-sizing: border-box;
+}
+/* GIFT SECTION */
+.gift-section {
+  text-align: auto;
+  padding: 60px 20px;
+}
+
+/* title */
+.gift-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 6vw, 42px);
+  margin-bottom: 10px;
+}
+
+/* deskripsi */
+.gift-desc {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* card rekening */
+.gift-card {
+  max-width: 500px;
+  margin: 0 auto 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.6);
+  box-shadow: var(--shadow);
+}
+
+/* nama bank */
+.bank-name {
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 6px;
+}
+
+/* baris rekening */
+.rekening-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+/* nomor */
+.rekening-number {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* nama pemilik */
+.rekening-name {
+  margin-top: 6px;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* divider */
+.gift-divider {
+  width: 80%;
+  height: 1px;
+  margin: -18px auto;
+}
+
+
+
+/* THANK SECTION */
+.thank-section {
+  position: relative;
+  min-height: 100vh;
+
+  background-image:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)),
+    url('thank.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 40px 20px;
+  color: #fff;
+}
+
+/* container */
+.thank-content {
+  max-width: 600px;
+}
+
+/* title */
+.thank-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 6vw, 42px);
+  margin-bottom: 12px;
+}
+
+/* deskripsi */
+.thank-desc {
+  font-size: clamp(13px, 3.5vw, 15px);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+/* nama pasangan */
+.thank-couple {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* foto */
+.thank-image {
+  width: 200px;
+  height: 250px;
+  object-fit: cover;
+  margin: 10px 0 10px;
+  border: 3px solid rgba(255,255,255,0.8);
+}
+
+/* credit */
+.thank-credit {
+  font-weight: 600;
+  margin-top: 150px;
+}
+
+/* sub credit */
+.thank-subcredit {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* sub credit */
+.thank-subcreditt {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+
+/* ========================= */
+/* BASE ANIMATION */
+/* ========================= */
+.fade-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 1s ease;
+}
+
+/* versi lebih halus untuk hero */
+.fade-soft {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-soft.show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 1.5s ease;
+}
+
+/* delay biar berurutan */
+.delay-1 { transition-delay: 0.2s; }
+.delay-2 { transition-delay: 0.4s; }
+.delay-3 { transition-delay: 0.6s; }
+.delay-4 { transition-delay: 0.8s; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+.cinematic {
+  opacity: 1;          /* PENTING: jangan 0 */
+  filter: blur(0px);   /* default normal */
+  transition: all 1.2s ease;
+}
+
+.cinematic.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+
+.hero h1 {
+  animation: fadeUp 1.5s ease forwards;
+}
+
+.hero h3 {
+  animation: fadeUp 1.8s ease forwards;
+}
+
+.hero .verse-text {
+  animation: fadeUp 2.2s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+section {
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* HILANGKAN GAP TOTAL */
+section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* KONTEN DI DALAM SECTION YANG DIATUR */
+section > * {
+  padding: 10px;
+}
+
+section {
+  margin: 0;
+  padding: 40px 20px;
+}
+
+.hero { min-height: 100vh; padding: 0; }
+
+section {
+  margin: 0;
+  padding: 40px 20px;
+}
+
+
+/* ================= AUTO SCROLL CSS ================= */
+.auto-scroll {
+  animation: scrollPage linear forwards;
+}
+
+@keyframes scrollPage {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+
+
+
+/* ================= FLOWER CORNER ANIMATION ================= */
+
+section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* semua bunga */
+section::before,
+section::after,
+section .flower-top-right,
+section .flower-bottom-left {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 0;
+
+  animation: floatFlower 7s ease-in-out infinite;
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.1));
+}
+
+/* kiri atas */
+section::before {
+  top: -29px;
+  left: -5px;
+  background-image: url('ornament-flower-left.png');
+  transform: translate(-20%, -20%) scale(1.2);
+}
+
+/* kanan bawah */
+section::after {
+  bottom: -29px;
+  right: -5px;
+  background-image: url('ornament-flower-right.png');
+  transform: translate(20%, 20%) scale(1.2);
+  animation-delay: 2s;
+}
+
+/* kanan atas */
+section .flower-top-right {
+  top: 0;
+  right: 0;
+  background-image: url('ornament-flower-right.png');
+  transform: translate(20%, -20%) scale(1.1);
+  animation-delay: 1s;
+}
+
+/* kiri bawah */
+section .flower-bottom-left {
+  bottom: 0;
+  left: 0;
+  background-image: url('ornament-flower-left.png');
+  transform: translate(-20%, 20%) scale(1.1);
+  animation-delay: 3s;
+}
+
+/* animasi ngambang halus */
+@keyframes floatFlower {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* ================= MOBILE VERSION ================= */
+@media (max-width: 420px) {
+  section::before,
+  section::after,
+  section .flower-top-right,
+  section .flower-bottom-left {
+    width: 212px;
+    height: 203px;
+    opacity: 0.7;
+  }
+}
+
+
+
+
+
+
+
+/* bunga default disembunyikan dulu */
+section::before,
+section::after,
+section .flower-top-right,
+section .flower-bottom-left {
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  transition: all 1.2s ease;
+}
+
+/* muncul saat aktif */
+section.show-flowers::before,
+section.show-flowers::after,
+section.show-flowers .flower-top-right,
+section.show-flowers .flower-bottom-left {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
+/* kelopak bunga */
+.petal {
+  position: fixed;
+  top: -50px;
+  width: 20px;
+  height: 20px;
+  background-image: url('kelopak1.png');
+  background-size: cover;
+  pointer-events: none;
+  z-index: 999;
+
+  opacity: 0.8;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+
+
+
+/* ================= CLOUD TRANSITION (2 IMAGE) ================= */
+.cloud-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+}
+
+/* common */
+.cloud {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+
+  opacity: 0.95;
+
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* kiri */
+.cloud-left {
+  left: 10%; /* keluar dikit biar nutup sempurna */
+  background-image: url('cloud-left.png');
+}
+
+/* kanan */
+.cloud-right {
+  right: 10%;
+  background-image: url('cloud-right.png');
+}
+
+/* saat animasi */
+.cloud-transition.active {
+  display: block;
+}
+
+.cloud-transition.active .cloud-left {
+  transform: translateX(-130%) scale(1.1);
+  opacity: 0;
+}
+
+.cloud-transition.active .cloud-right {
+  transform: translateX(130%) scale(1.1);
+  opacity: 0;
+}
+
+/* ================= CLOUD FIX NO CUT ================= */
+.cloud-transition {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 999999;
+  pointer-events: none;
+
+  overflow: visible !important;
+}
+
+/* CLOUD BESAR & BEBAS */
+.cloud {
+  position: absolute;
+
+  top: -20%;
+  width: 150%;
+  height: 150%;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  opacity: 0.95;
+}
+
+/* posisi awal */
+.cloud-left {
+  left: -30%;
+  background-image: url('cloud-left.png');
+}
+
+.cloud-right {
+  right: -30%;
+  background-image: url('cloud-right.png');
+}
+
+/* animasi keluar (JANGAN PELIT JARAK) */
+.cloud-transition.active .cloud-left {
+  transform: translateX(-180%) scale(1.0);
+  transition: transform 3.0s ease, opacity 3.0s ease;
+  opacity: 0;
+}
+
+.cloud-transition.active .cloud-right {
+  transform: translateX(180%) scale(1.0);
+  transition: transform 3.0s ease, opacity 3.0s ease;
+  opacity: 0;
+}
